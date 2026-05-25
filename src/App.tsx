@@ -39,6 +39,9 @@ import Footer from "./components/Footer";
 import TrustBar from "./components/TrustBar";
 import InteractiveEstimator from "./components/InteractiveEstimator";
 import heroBanner from "./assets/images/hero_banner_luxury_construction_1779616425828.png";
+import residentialVilla from "./assets/images/residential_villa_1779616462713.png";
+import luxuryInterior from "./assets/images/luxury_interior_design_1779616481038.png";
+import commercialConstruction from "./assets/images/commercial_construction_1779616445045.png";
 export default function App() {
   const [activePage, setActivePage] = useState<ActivePage>("home");
   const [selectedCategory, setSelectedCategory] = useState<
@@ -712,7 +715,7 @@ export default function App() {
 
                 <div className="lg:col-span-5 border border-white/10 rounded-none overflow-hidden shadow-2xl bg-neutral-900">
                   <img
-                    src="/src/assets/images/luxury_interior_design_1779616481038.png"
+                    src={luxuryInterior}
                     alt="Ahzuriah executive corporate design"
                     referrerPolicy="no-referrer"
                     className="w-full h-[300px] object-cover"
@@ -1149,7 +1152,7 @@ export default function App() {
 
                 <div className="lg:col-span-5 rounded-none overflow-hidden border border-white/10 bg-neutral-900 shadow-2xl">
                   <img
-                    src="/src/assets/images/residential_villa_1779616462713.png"
+                    src={residentialVilla}
                     alt="Luxury Custom Lakeside Villa by Ahzuriah"
                     referrerPolicy="no-referrer"
                     className="w-full h-[320px] object-cover"
