@@ -27,11 +27,17 @@ jobs:
           node-version: 20
           cache: "npm"
 
-      - name: Install dependencies
-        run: npm ci
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
 
-      - name: Build with Next.js
-        run: npm run build
+      - name: Install dependencies and build
+        run: bun i && bun run build
+
+      # - name: Install dependencies
+      #   run: npm ci
+
+      # - name: Build with react
+      #   run: npm run build
 
       - name: Create .nojekyll (prevents Jekyll breaking _next folder)
         run: mkdir out && touch ./out/.nojekyll
