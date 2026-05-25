@@ -1,103 +1,118 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Building2, 
-  MapPin, 
-  Phone, 
-  Mail, 
-  ShieldCheck, 
-  Compass, 
-  HardHat, 
-  CheckCircle2, 
-  Check, 
-  ChevronRight, 
-  ArrowRight, 
-  Briefcase, 
-  Users, 
-  Workflow, 
-  Quote, 
-  Star, 
-  Plus, 
-  Minus, 
+import React, { useState, useEffect } from "react";
+import {
+  Building2,
+  MapPin,
+  Phone,
+  Mail,
+  ShieldCheck,
+  Compass,
+  HardHat,
+  CheckCircle2,
+  Check,
+  ChevronRight,
+  ArrowRight,
+  Briefcase,
+  Users,
+  Workflow,
+  Quote,
+  Star,
+  Plus,
+  Minus,
   ExternalLink,
   Target,
   FileText,
   BadgeAlert,
-  Send
-} from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
-import { ActivePage, Project, ServiceDetail } from './types';
-import { projects } from './data/projects';
-import { services, teamMembers, coreValues, testimonials } from './data/services';
+  Send,
+} from "lucide-react";
+import { motion, AnimatePresence } from "motion/react";
+import { ActivePage, Project, ServiceDetail } from "./types";
+import { projects } from "./data/projects";
+import {
+  services,
+  teamMembers,
+  coreValues,
+  testimonials,
+} from "./data/services";
 
-import Header from './components/Header';
-import Footer from './components/Footer';
-import TrustBar from './components/TrustBar';
-import InteractiveEstimator from './components/InteractiveEstimator';
-
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import TrustBar from "./components/TrustBar";
+import InteractiveEstimator from "./components/InteractiveEstimator";
+import heroBanner from "./assets/images/hero_banner_luxury_construction_1779616425828.png";
 export default function App() {
-  const [activePage, setActivePage] = useState<ActivePage>('home');
-  const [selectedCategory, setSelectedCategory] = useState<'all' | 'commercial' | 'residential' | 'interiors' | 'renovation'>('all');
+  const [activePage, setActivePage] = useState<ActivePage>("home");
+  const [selectedCategory, setSelectedCategory] = useState<
+    "all" | "commercial" | "residential" | "interiors" | "renovation"
+  >("all");
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
-  
+
   // Lead submission simulation state for contact page
   const [contactSubmitted, setContactSubmitted] = useState(false);
   const [contactForm, setContactForm] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    service: 'commercial',
-    scale: '100-300 Sqm',
-    message: '',
-    location: 'Kisumu'
+    name: "",
+    email: "",
+    phone: "",
+    service: "commercial",
+    scale: "100-300 Sqm",
+    message: "",
+    location: "Kisumu",
   });
 
   // Top window anchor scroll on pagination
   const handlePageChange = (page: ActivePage) => {
     setActivePage(page);
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    window.scrollTo({ top: 0, behavior: "instant" });
   };
 
   const handleContactSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!contactForm.name || !contactForm.phone || !contactForm.email) {
-      alert('Must complete required contact parameters.');
+      alert("Must complete required contact parameters.");
       return;
     }
     setContactSubmitted(true);
     // Auto-save contact lead message in localStorage
     try {
-      const existingLeads = JSON.parse(localStorage.getItem('ahzuriah_leads') || '[]');
+      const existingLeads = JSON.parse(
+        localStorage.getItem("ahzuriah_leads") || "[]",
+      );
       existingLeads.push({
-        type: 'General Contact',
-        lead: { fullName: contactForm.name, email: contactForm.email, phone: contactForm.phone },
-        params: { category: contactForm.service, location: contactForm.location },
+        type: "General Contact",
+        lead: {
+          fullName: contactForm.name,
+          email: contactForm.email,
+          phone: contactForm.phone,
+        },
+        params: {
+          category: contactForm.service,
+          location: contactForm.location,
+        },
         message: contactForm.message,
-        time: new Date().toLocaleTimeString()
+        time: new Date().toLocaleTimeString(),
       });
-      localStorage.setItem('ahzuriah_leads', JSON.stringify(existingLeads));
+      localStorage.setItem("ahzuriah_leads", JSON.stringify(existingLeads));
     } catch (_) {}
   };
 
-  const filteredProjects = selectedCategory === 'all' 
-    ? projects 
-    : projects.filter(p => p.category === selectedCategory);
+  const filteredProjects =
+    selectedCategory === "all"
+      ? projects
+      : projects.filter((p) => p.category === selectedCategory);
 
   return (
     <div className="min-h-screen bg-[#0F0F0F] text-white flex flex-col font-sans selection:bg-[#C5A059] selection:text-[#111111]">
-      
       {/* Header Sticky Container */}
-      <Header 
-        activePage={activePage} 
-        onPageChange={handlePageChange} 
-        onRequestQuote={() => handlePageChange('contact')} 
+      <Header
+        activePage={activePage}
+        onPageChange={handlePageChange}
+        onRequestQuote={() => handlePageChange("contact")}
       />
 
       {/* Primary Page Canvas Switcher */}
       <main className="flex-grow">
         <AnimatePresence mode="wait">
-          
           {/* HOME PAGE VIEW */}
-          {activePage === 'home' && (
+          {activePage === "home" && (
             <motion.div
               key="home"
               initial={{ opacity: 0 }}
@@ -109,8 +124,8 @@ export default function App() {
               <section className="relative min-h-[90vh] md:min-h-screen flex items-center justify-center overflow-hidden bg-[#0A0A0A]">
                 {/* Background high-end generated image with overlay dark scrims */}
                 <div className="absolute inset-0 z-0">
-                  <img 
-                    src="/src/assets/images/hero_banner_luxury_construction_1779616425828.png" 
+                  <img
+                    src={heroBanner}
                     alt="Premium Architectural Construction in Kenya by Ahzuriah"
                     referrerPolicy="no-referrer"
                     className="w-full h-full object-cover object-center opacity-30 scale-102 animate-pulse-slow grayscale"
@@ -120,33 +135,41 @@ export default function App() {
                 </div>
 
                 <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10 w-full py-16 text-left">
-                  
                   {/* Subtle brand tag */}
                   <div className="mb-6 inline-flex items-center gap-4">
                     <span className="h-[1px] w-12 bg-[#C5A059]"></span>
-                    <span className="text-[11px] uppercase tracking-[0.4em] text-[#C5A059] font-semibold">Architectural Excellence</span>
+                    <span className="text-[11px] uppercase tracking-[0.4em] text-[#C5A059] font-semibold">
+                      Architectural Excellence
+                    </span>
                   </div>
 
                   <h1 className="text-4xl md:text-6xl lg:text-8xl font-sans font-black tracking-tighter leading-[0.9] max-w-4xl text-white uppercase">
                     Engineering <br />
-                    <span className="text-white/20 uppercase">Premium</span> <br />
+                    <span className="text-white/20 uppercase">
+                      Premium
+                    </span>{" "}
+                    <br />
                     Landmarks.
                   </h1>
 
                   <p className="max-w-md text-white/50 text-sm leading-relaxed mt-8 border-l-2 border-[#C5A059] pl-6 h-fit font-sans">
-                    Ahzuriah Construction crafts prestigious commercial offices and luxury residential villas across Kenya. Registered under category <strong>NCA-1</strong>, we secure your structural investments with bulletproof engineering and absolute budget transparency.
+                    Ahzuriah Construction crafts prestigious commercial offices
+                    and luxury residential villas across Kenya. Registered under
+                    category <strong>NCA-1</strong>, we secure your structural
+                    investments with bulletproof engineering and absolute budget
+                    transparency.
                   </p>
 
                   {/* Primary CTA Grid Row */}
                   <div className="flex flex-col sm:flex-row gap-4 mt-10 max-w-md">
                     <button
-                      onClick={() => handlePageChange('contact')}
+                      onClick={() => handlePageChange("contact")}
                       className="border border-[#C5A059] text-[#C5A059] text-[10px] font-bold uppercase tracking-widest px-8 py-4 bg-transparent hover:bg-[#C5A059] hover:text-black transition-all duration-300 cursor-pointer"
                     >
                       Request Quote
                     </button>
                     <button
-                      onClick={() => handlePageChange('portfolio')}
+                      onClick={() => handlePageChange("portfolio")}
                       className="border border-white/10 hover:border-white text-white bg-transparent hover:bg-white/5 font-bold tracking-widest text-[10px] uppercase px-8 py-4 transition-all duration-300 cursor-pointer"
                     >
                       View Precision Work
@@ -168,7 +191,6 @@ export default function App() {
                       Zero Budget Surprises Guarantee
                     </span>
                   </div>
-
                 </div>
               </section>
 
@@ -179,35 +201,45 @@ export default function App() {
               <section className="py-20 bg-[#0F0F0F] px-4 md:px-6 relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-1/3 h-full bg-[#151515] border-l border-white/10 z-0"></div>
                 <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
-                  
                   {/* Left content block */}
                   <div className="lg:col-span-7 flex flex-col gap-6">
                     <span className="text-[11px] font-mono uppercase tracking-[0.25em] text-[#C5A059] block font-bold">
                       &equiv; AHZURIAH CORE FOCUS
                     </span>
                     <h2 className="text-3xl md:text-4xl font-sans font-black text-white uppercase tracking-tight">
-                      A Top-Tier Digital Construction Partner Building Your Long-Term Yield
+                      A Top-Tier Digital Construction Partner Building Your
+                      Long-Term Yield
                     </h2>
                     <p className="text-sm text-[#999999] leading-relaxed">
-                      Founded with a principal determination to address the critical gap in precision engineering, material inflation protection, and county structural certification, Ahzuriah Construction Company delivers landmark solutions. We specialize in general contracting, design-build structures, and upscale luxury residential properties.
+                      Founded with a principal determination to address the
+                      critical gap in precision engineering, material inflation
+                      protection, and county structural certification, Ahzuriah
+                      Construction Company delivers landmark solutions. We
+                      specialize in general contracting, design-build
+                      structures, and upscale luxury residential properties.
                     </p>
-                    
+
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-3">
                       <div className="p-4 bg-[#151515] border border-white/10">
                         <h4 className="text-xs font-mono uppercase font-bold text-white tracking-widest mb-1.5 flex items-center gap-1.5">
-                          <Check className="w-4 h-4 text-[#C5A059]" /> Integrity Sourcing
+                          <Check className="w-4 h-4 text-[#C5A059]" /> Integrity
+                          Sourcing
                         </h4>
                         <p className="text-[11px] text-[#888888]">
-                          We audit raw material batches in certified laboratories. No substandard steel, zero sand dilution.
+                          We audit raw material batches in certified
+                          laboratories. No substandard steel, zero sand
+                          dilution.
                         </p>
                       </div>
 
                       <div className="p-4 bg-[#151515] border border-white/10">
                         <h4 className="text-xs font-mono uppercase font-bold text-white tracking-widest mb-1.5 flex items-center gap-1.5">
-                          <Check className="w-4 h-4 text-[#C5A059]" /> Cost Transparency
+                          <Check className="w-4 h-4 text-[#C5A059]" /> Cost
+                          Transparency
                         </h4>
                         <p className="text-[11px] text-[#888888]">
-                          Fully itemized structural bills of quantities with constant market-hedged pricing safeguards.
+                          Fully itemized structural bills of quantities with
+                          constant market-hedged pricing safeguards.
                         </p>
                       </div>
                     </div>
@@ -216,16 +248,18 @@ export default function App() {
                   {/* Right visual block */}
                   <div className="lg:col-span-5 relative">
                     <div className="relative border border-white/10 overflow-hidden bg-neutral-900 shadow-2xl">
-                      <img 
-                        src="/src/assets/images/commercial_construction_1779616445045.png" 
+                      <img
+                        src="/src/assets/images/commercial_construction_1779616445045.png"
                         alt="High trust structural concrete frameworks in Western Kenya"
                         referrerPolicy="no-referrer"
                         className="w-full h-[320px] object-cover grayscale hover:grayscale-0 transition-all duration-500"
                       />
                       <div className="p-4 bg-[#151515] border-t border-white/10 flex justify-between items-center text-xs font-mono">
-                        <span className="text-white/40">NCA-1 Structural Core Shells</span>
-                        <button 
-                          onClick={() => handlePageChange('about')} 
+                        <span className="text-white/40">
+                          NCA-1 Structural Core Shells
+                        </span>
+                        <button
+                          onClick={() => handlePageChange("about")}
                           className="text-[#C5A059] font-bold flex items-center gap-1 hover:underline text-[10px] uppercase tracking-widest font-sans"
                         >
                           Our Heritage &rarr;
@@ -233,14 +267,12 @@ export default function App() {
                       </div>
                     </div>
                   </div>
-
                 </div>
               </section>
 
               {/* Service Categories Showcase Grid */}
               <section className="py-20 bg-[#0A0A0A] px-4 md:px-6 relative overflow-hidden">
                 <div className="max-w-7xl mx-auto">
-                  
                   {/* Title Segment */}
                   <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
                     <div>
@@ -252,7 +284,7 @@ export default function App() {
                       </h3>
                     </div>
                     <button
-                      onClick={() => handlePageChange('services')}
+                      onClick={() => handlePageChange("services")}
                       className="text-xs font-bold text-[#C5A059] uppercase tracking-wider flex items-center gap-1 hover:underline group shrink-0"
                     >
                       View All 8 Disciplines
@@ -263,21 +295,21 @@ export default function App() {
                   {/* Services Bento Grid */}
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {services.map((service) => (
-                      <div 
+                      <div
                         key={service.id}
                         className="bg-[#151515] border border-white/10 hover:border-[#C5A059]/30 rounded-none overflow-hidden flex flex-col justify-between transition-all duration-300 hover:-translate-y-1 shadow-lg group"
                       >
                         <div>
                           <div className="h-44 overflow-hidden relative">
-                            <img 
-                              src={service.imageUrl} 
-                              alt={service.title} 
+                            <img
+                              src={service.imageUrl}
+                              alt={service.title}
                               referrerPolicy="no-referrer"
                               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                             />
                             <div className="absolute inset-0 bg-gradient-to-t from-[#181818] to-transparent"></div>
                           </div>
-                          
+
                           <div className="p-5">
                             <h4 className="text-md font-sans font-bold text-white uppercase tracking-wide group-hover:text-[#C5A059] transition-colors">
                               {service.title}
@@ -296,11 +328,13 @@ export default function App() {
                             id={`home-service-read-${service.id}`}
                             onClick={() => {
                               const routeMap: Record<string, ActivePage> = {
-                                'commercial': 'commercial-construction',
-                                'residential': 'residential-construction',
-                                'interiors': 'interior-design',
+                                commercial: "commercial-construction",
+                                residential: "residential-construction",
+                                interiors: "interior-design",
                               };
-                              handlePageChange(routeMap[service.id] || 'services');
+                              handlePageChange(
+                                routeMap[service.id] || "services",
+                              );
                             }}
                             className="text-xs font-mono text-[#C5A059] font-bold flex items-center gap-0.5 hover:underline"
                           >
@@ -310,14 +344,12 @@ export default function App() {
                       </div>
                     ))}
                   </div>
-
                 </div>
               </section>
 
               {/* Featured architectural Work showcase */}
               <section className="py-20 bg-[#0F0F0F] px-4 md:px-6">
                 <div className="max-w-7xl mx-auto">
-                  
                   <div className="text-center max-w-xl mx-auto mb-12">
                     <span className="text-[11px] font-mono uppercase tracking-[0.25em] text-[#C5A059] block mb-2">
                       CASE STUDIES
@@ -326,23 +358,32 @@ export default function App() {
                       Landmarks of Modern Construction
                     </h3>
                     <p className="text-xs text-[#999999] mt-2">
-                      Exploring high-trust civil executions and architectural residential villas across Western Kenya and Nairobi.
+                      Exploring high-trust civil executions and architectural
+                      residential villas across Western Kenya and Nairobi.
                     </p>
                   </div>
 
                   {/* Portfolio Tab Selectors */}
                   <div className="flex flex-wrap justify-center gap-2 mb-10">
-                    {(['all', 'commercial', 'residential', 'interiors', 'renovation'] as const).map((tab) => (
+                    {(
+                      [
+                        "all",
+                        "commercial",
+                        "residential",
+                        "interiors",
+                        "renovation",
+                      ] as const
+                    ).map((tab) => (
                       <button
                         key={tab}
                         onClick={() => setSelectedCategory(tab)}
                         className={`px-4 py-2 rounded-none text-xs font-mono uppercase tracking-wider transition-colors ${
-                          selectedCategory === tab 
-                            ? 'bg-[#C5A059] text-neutral-950 font-bold' 
-                            : 'bg-[#222222] text-[#999999] hover:text-white'
+                          selectedCategory === tab
+                            ? "bg-[#C5A059] text-neutral-950 font-bold"
+                            : "bg-[#222222] text-[#999999] hover:text-white"
                         }`}
                       >
-                        {tab === 'all' ? 'All Masterpieces' : tab}
+                        {tab === "all" ? "All Masterpieces" : tab}
                       </button>
                     ))}
                   </div>
@@ -350,14 +391,14 @@ export default function App() {
                   {/* Standard Grid mapping */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {filteredProjects.slice(0, 2).map((project) => (
-                      <div 
+                      <div
                         key={project.id}
                         className="bg-[#0A0A0A] border border-white/10 rounded-none overflow-hidden flex flex-col md:flex-row shadow-2xl hover:border-white/10 transition-colors"
                       >
                         <div className="w-full md:w-1/2 h-[260px] md:h-auto overflow-hidden relative">
-                          <img 
-                            src={project.imageUrl} 
-                            alt={project.name} 
+                          <img
+                            src={project.imageUrl}
+                            alt={project.name}
                             referrerPolicy="no-referrer"
                             className="w-full h-full object-cover"
                           />
@@ -380,15 +421,19 @@ export default function App() {
                               <strong>Challenge:</strong> {project.challenge}
                             </p>
                           </div>
-                          
+
                           <div className="border-t border-white/10 pt-4 mt-4 flex justify-between items-center">
                             <div>
-                              <span className="text-[9px] font-mono text-[#666666] uppercase block">Value Delivery</span>
-                              <span className="text-xs font-bold text-white font-mono">{project.value}</span>
+                              <span className="text-[9px] font-mono text-[#666666] uppercase block">
+                                Value Delivery
+                              </span>
+                              <span className="text-xs font-bold text-white font-mono">
+                                {project.value}
+                              </span>
                             </div>
                             <button
                               id={`case-card-read-${project.id}`}
-                              onClick={() => handlePageChange('portfolio')}
+                              onClick={() => handlePageChange("portfolio")}
                               className="text-xs font-mono font-bold text-[#C5A059] hover:underline flex items-center gap-0.5"
                             >
                               Details &rarr;
@@ -401,20 +446,18 @@ export default function App() {
 
                   <div className="text-center mt-10">
                     <button
-                      onClick={() => handlePageChange('portfolio')}
+                      onClick={() => handlePageChange("portfolio")}
                       className="bg-neutral-900 border border-neutral-800 hover:border-neutral-700 text-[#cccccc] hover:text-white px-6 py-2.5 rounded-none text-xs uppercase font-mono tracking-wider font-bold transition-all cursor-pointer"
                     >
                       Browse Entire Portfolio Case Studies
                     </button>
                   </div>
-
                 </div>
               </section>
 
               {/* Architectural Step-by-Step Delivery Process */}
               <section className="py-20 bg-[#0A0A0A] px-4 md:px-6 relative overflow-hidden">
                 <div className="max-w-7xl mx-auto relative z-10">
-                  
                   <div className="text-center max-w-xl mx-auto mb-16">
                     <span className="text-[11px] font-mono uppercase tracking-[0.25em] text-[#C5A059] block mb-2">
                       CONSTRUCTION WORKFLOW
@@ -423,20 +466,41 @@ export default function App() {
                       Our Flawless Delivery Process
                     </h3>
                     <p className="text-xs text-[#999999] mt-2">
-                      How we eliminate construction hazards, compliance errors, and material inflation to secure your project execution.
+                      How we eliminate construction hazards, compliance errors,
+                      and material inflation to secure your project execution.
                     </p>
                   </div>
 
                   {/* Flow blocks */}
                   <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
                     {[
-                      { step: '01', title: 'Consult Desk', desc: 'Analyzing land parameters, soil specifics, legal county alignments, and draft blueprints.' },
-                      { step: '02', title: 'Budget Locking', desc: 'Drafting fully itemized Bills of Quantities and locking material pricing against inflation.' },
-                      { step: '03', title: 'Permits & Approvals', desc: 'Managing NEMA submittals, spatial county planning certificate compliance, and NCA filings.' },
-                      { step: '04', title: 'Precision Build', desc: 'Executing deep foundational civil works and structural concrete frames with active safety monitors.' },
-                      { step: '05', title: 'Turnkey Delivery', desc: 'Bespoke high-end wood joinery, architectural lighting, structural handover keys certificate.' },
+                      {
+                        step: "01",
+                        title: "Consult Desk",
+                        desc: "Analyzing land parameters, soil specifics, legal county alignments, and draft blueprints.",
+                      },
+                      {
+                        step: "02",
+                        title: "Budget Locking",
+                        desc: "Drafting fully itemized Bills of Quantities and locking material pricing against inflation.",
+                      },
+                      {
+                        step: "03",
+                        title: "Permits & Approvals",
+                        desc: "Managing NEMA submittals, spatial county planning certificate compliance, and NCA filings.",
+                      },
+                      {
+                        step: "04",
+                        title: "Precision Build",
+                        desc: "Executing deep foundational civil works and structural concrete frames with active safety monitors.",
+                      },
+                      {
+                        step: "05",
+                        title: "Turnkey Delivery",
+                        desc: "Bespoke high-end wood joinery, architectural lighting, structural handover keys certificate.",
+                      },
                     ].map((stepObj) => (
-                      <div 
+                      <div
                         key={stepObj.step}
                         className="bg-[#151515] p-5 rounded-none border border-white/10 relative group transition-all duration-300 hover:border-[#C5A059]/30 shadow-md"
                       >
@@ -452,7 +516,6 @@ export default function App() {
                       </div>
                     ))}
                   </div>
-
                 </div>
               </section>
 
@@ -460,7 +523,6 @@ export default function App() {
               <section className="py-20 bg-[#0F0F0F] px-4 md:px-6 border-t border-white/10 relative">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom,#C5A059/2,transparent_60%)]"></div>
                 <div className="max-w-7xl mx-auto relative z-10">
-                  
                   <div className="text-center max-w-xl mx-auto mb-10">
                     <span className="text-[11px] font-[#C5A059] font-mono tracking-[0.2em] text-[#C5A059] block mb-2">
                       INSTANT ANALYTICAL ESTIMATION TOOL
@@ -469,20 +531,20 @@ export default function App() {
                       Lock In Your Structural Budget Index
                     </h3>
                     <p className="text-xs text-[#999999] mt-2">
-                      Access live, itemized materials modeling based on the latest National Construction Authority of Kenya database indices.
+                      Access live, itemized materials modeling based on the
+                      latest National Construction Authority of Kenya database
+                      indices.
                     </p>
                   </div>
 
                   {/* Calculator Embed */}
                   <InteractiveEstimator />
-
                 </div>
               </section>
 
               {/* Client testimonials Section */}
               <section className="py-20 bg-[#0A0A0A] px-4 md:px-6">
                 <div className="max-w-7xl mx-auto">
-                  
                   <div className="text-center max-w-xl mx-auto mb-16">
                     <span className="text-[11px] font-mono uppercase tracking-[0.25em] text-[#C5A059] block mb-2">
                       PARTNER TESTIMONY
@@ -494,7 +556,7 @@ export default function App() {
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {testimonials.map((test) => (
-                      <div 
+                      <div
                         key={test.id}
                         className="bg-[#151515] p-6 rounded-none border border-white/10 relative shadow-lg flex flex-col justify-between"
                       >
@@ -504,7 +566,7 @@ export default function App() {
                               <Star key={i} className="w-4 h-4 fill-current" />
                             ))}
                           </div>
-                          
+
                           <p className="text-[12px] italic text-[#cccccc] leading-relaxed relative z-10">
                             &ldquo;{test.content}&rdquo;
                           </p>
@@ -526,7 +588,6 @@ export default function App() {
                       </div>
                     ))}
                   </div>
-
                 </div>
               </section>
 
@@ -537,18 +598,22 @@ export default function App() {
                   <span className="p-3 bg-neutral-800/80 border border-[#C5A059]/30 rounded-none text-[#C5A059] inline-block mb-4">
                     <Building2 className="w-6 h-6" />
                   </span>
-                  
+
                   <h3 className="text-3xl md:text-5xl font-sans font-black uppercase tracking-tight text-white mb-4">
                     Ready to Build with Uncompromising Precision?
                   </h3>
-                  
+
                   <p className="text-sm md:text-md text-[#999999] leading-relaxed max-w-2xl mx-auto mb-8 font-sans">
-                    Don&apos;t risk the lifespan of your commercial or residential asset with substandard materials or untrustworthy contractors. Contact Ahzuriah master constructors now to book a physical site survey or blueprint evaluation.
+                    Don&apos;t risk the lifespan of your commercial or
+                    residential asset with substandard materials or
+                    untrustworthy contractors. Contact Ahzuriah master
+                    constructors now to book a physical site survey or blueprint
+                    evaluation.
                   </p>
 
                   <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
                     <button
-                      onClick={() => handlePageChange('contact')}
+                      onClick={() => handlePageChange("contact")}
                       className="w-full sm:w-auto bg-gradient-to-r from-[#C5A059] to-[#E3C293] hover:from-[#B1936B] hover:to-[#C5A059] text-[#111111] font-sans font-bold uppercase tracking-wider text-xs px-8 py-4 rounded-none shadow-2xl transition-all duration-300 hover:-translate-y-0.5 cursor-pointer"
                     >
                       Request Detailed Brief Booking
@@ -564,16 +629,16 @@ export default function App() {
                   </div>
 
                   <p className="text-[10px] text-[#666666] font-mono mt-6 uppercase tracking-wider">
-                    Office Hotline: +254 712 345 678 &nbsp;&bull;&nbsp; Estimated response: &lt;2 Hours
+                    Office Hotline: +254 712 345 678 &nbsp;&bull;&nbsp;
+                    Estimated response: &lt;2 Hours
                   </p>
                 </div>
               </section>
-
             </motion.div>
           )}
 
           {/* ABOUT US PAGE VIEW */}
-          {activePage === 'about' && (
+          {activePage === "about" && (
             <motion.div
               key="about"
               initial={{ opacity: 0 }}
@@ -591,7 +656,9 @@ export default function App() {
                   Who we are: Ahzuriah Construction
                 </h1>
                 <p className="text-xs text-[#999999] mt-2 max-w-xl">
-                  A high-end, licensed general constructor executing nationwide commercial developments and bespoke residential landmarks in Kenya.
+                  A high-end, licensed general constructor executing nationwide
+                  commercial developments and bespoke residential landmarks in
+                  Kenya.
                 </p>
               </div>
 
@@ -602,35 +669,59 @@ export default function App() {
                     Our Corporate Philosophy & Structural Identity
                   </h3>
                   <p>
-                    Established over a decade ago with headquarters in Kisumu town, <strong>Ahzuriah Construction Company Limited</strong> has emerged as an authority in design-build integration, complex project management, and high-performance commercial contracting. Our footprint covers Kisumu and Western Kenya, extending to prestigious developments in Nairobi.
+                    Established over a decade ago with headquarters in Kisumu
+                    town, <strong>Ahzuriah Construction Company Limited</strong>{" "}
+                    has emerged as an authority in design-build integration,
+                    complex project management, and high-performance commercial
+                    contracting. Our footprint covers Kisumu and Western Kenya,
+                    extending to prestigious developments in Nairobi.
                   </p>
                   <p>
-                    We recognize that construction is a critical, high-importance financial venture. Our engineering desk approaches each layout with maximum precision, auditing structural stress lines, soil bearing qualities, and legal permit matrices beforehand to guarantee safety and compliance.
+                    We recognize that construction is a critical,
+                    high-importance financial venture. Our engineering desk
+                    approaches each layout with maximum precision, auditing
+                    structural stress lines, soil bearing qualities, and legal
+                    permit matrices beforehand to guarantee safety and
+                    compliance.
                   </p>
-                  
+
                   {/* Mission / Vision Cards */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-2">
                     <div className="p-4 bg-[#151515] border border-white/10 rounded-none">
-                      <span className="text-[10px] font-mono text-[#C5A059] uppercase tracking-widest block mb-1">Our Mission</span>
-                      <p className="text-[11px] text-[#999999]">To erect high-performance, safer structural realities that elevate Kenyan businesses and secure elite residential comfort with total cost integrity.</p>
+                      <span className="text-[10px] font-mono text-[#C5A059] uppercase tracking-widest block mb-1">
+                        Our Mission
+                      </span>
+                      <p className="text-[11px] text-[#999999]">
+                        To erect high-performance, safer structural realities
+                        that elevate Kenyan businesses and secure elite
+                        residential comfort with total cost integrity.
+                      </p>
                     </div>
                     <div className="p-4 bg-[#151515] border border-white/10 rounded-none">
-                      <span className="text-[10px] font-mono text-[#C5A059] uppercase tracking-widest block mb-1">Our Vision</span>
-                      <p className="text-[11px] text-[#999999]">To be East Africa&apos;s leading high-status commercial contractor, renowned for absolute blueprint fidelity and zero compromise material strength.</p>
+                      <span className="text-[10px] font-mono text-[#C5A059] uppercase tracking-widest block mb-1">
+                        Our Vision
+                      </span>
+                      <p className="text-[11px] text-[#999999]">
+                        To be East Africa&apos;s leading high-status commercial
+                        contractor, renowned for absolute blueprint fidelity and
+                        zero compromise material strength.
+                      </p>
                     </div>
                   </div>
                 </div>
 
                 <div className="lg:col-span-5 border border-white/10 rounded-none overflow-hidden shadow-2xl bg-neutral-900">
-                  <img 
-                    src="/src/assets/images/luxury_interior_design_1779616481038.png" 
-                    alt="Ahzuriah executive corporate design" 
+                  <img
+                    src="/src/assets/images/luxury_interior_design_1779616481038.png"
+                    alt="Ahzuriah executive corporate design"
                     referrerPolicy="no-referrer"
                     className="w-full h-[300px] object-cover"
                   />
                   <div className="p-4 bg-[#151515] text-[10px] font-mono text-[#999999] flex justify-between items-center">
                     <span>NCA Grade Registered Builder</span>
-                    <span className="text-[#C5A059] font-bold">Western Kenya & Nairobi</span>
+                    <span className="text-[#C5A059] font-bold">
+                      Western Kenya & Nairobi
+                    </span>
                   </div>
                 </div>
               </div>
@@ -638,13 +729,20 @@ export default function App() {
               {/* Core Corporate Values section */}
               <div className="flex flex-col gap-8 py-8 border-t border-white/10">
                 <div className="text-center max-w-xl mx-auto">
-                  <span className="text-[#C5A059] text-xs font-mono tracking-widest uppercase block mb-1">CORE FOUNDATIONS</span>
-                  <h3 className="text-xl md:text-2xl font-sans font-bold uppercase text-white">The Values that Guide Every Foundation We Pour</h3>
+                  <span className="text-[#C5A059] text-xs font-mono tracking-widest uppercase block mb-1">
+                    CORE FOUNDATIONS
+                  </span>
+                  <h3 className="text-xl md:text-2xl font-sans font-bold uppercase text-white">
+                    The Values that Guide Every Foundation We Pour
+                  </h3>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                   {coreValues.map((val, i) => (
-                    <div key={i} className="bg-[#151515] p-5 rounded-none border border-white/10">
+                    <div
+                      key={i}
+                      className="bg-[#151515] p-5 rounded-none border border-white/10"
+                    >
                       <div className="w-8 h-8 rounded-none bg-[#C5A059]/10 text-[#C5A059] flex items-center justify-center font-bold font-mono text-xs mb-3">
                         {i + 1}
                       </div>
@@ -662,13 +760,20 @@ export default function App() {
               {/* Corporate Leadership Team Section */}
               <div className="flex flex-col gap-8 py-8 border-t border-white/10">
                 <div className="text-center max-w-xl mx-auto">
-                  <span className="text-[#C5A059] text-xs font-mono tracking-widest uppercase block mb-1 font-bold">EXECUTIVE OFFICERS</span>
-                  <h3 className="text-xl md:text-2xl font-sans font-bold uppercase text-white">Our Engineering Leadership</h3>
+                  <span className="text-[#C5A059] text-xs font-mono tracking-widest uppercase block mb-1 font-bold">
+                    EXECUTIVE OFFICERS
+                  </span>
+                  <h3 className="text-xl md:text-2xl font-sans font-bold uppercase text-white">
+                    Our Engineering Leadership
+                  </h3>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {teamMembers.map((member, i) => (
-                    <div key={i} className="bg-[#151515] p-6 rounded-none border border-white/10 flex flex-col justify-between hover:border-white/10 transition-colors">
+                    <div
+                      key={i}
+                      className="bg-[#151515] p-6 rounded-none border border-white/10 flex flex-col justify-between hover:border-white/10 transition-colors"
+                    >
                       <div>
                         <span className="text-xs font-mono text-[#C5A059] uppercase tracking-wide block mb-1">
                           {member.role}
@@ -682,18 +787,19 @@ export default function App() {
                       </div>
                       <div className="border-t border-white/10 pt-4 mt-6 flex justify-between items-center text-[10px] font-mono text-[#666666]">
                         <span>Ahzuriah Director</span>
-                        <span className="text-emerald-500 font-bold">&bull; Fully Active</span>
+                        <span className="text-emerald-500 font-bold">
+                          &bull; Fully Active
+                        </span>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
-
             </motion.div>
           )}
 
           {/* GENERAL SERVICES PAGE VIEW */}
-          {activePage === 'services' && (
+          {activePage === "services" && (
             <motion.div
               key="services"
               initial={{ opacity: 0 }}
@@ -711,14 +817,19 @@ export default function App() {
                   Ahzuriah Engineering Capabilities
                 </h1>
                 <p className="text-xs text-[#999999] mt-2 max-w-xl">
-                  Fully licensed general contracting, mechanical plumbing structures, volumetric space management, and deep architectural foundations tailored for modern properties.
+                  Fully licensed general contracting, mechanical plumbing
+                  structures, volumetric space management, and deep
+                  architectural foundations tailored for modern properties.
                 </p>
               </div>
 
               {/* Bento service cards rendering */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {services.map((serv) => (
-                  <div key={serv.id} className="bg-[#151515] border border-white/10 rounded-none overflow-hidden flex flex-col justify-between shadow-xl">
+                  <div
+                    key={serv.id}
+                    className="bg-[#151515] border border-white/10 rounded-none overflow-hidden flex flex-col justify-between shadow-xl"
+                  >
                     <div className="p-6 md:p-8">
                       <div className="flex flex-col sm:flex-row justify-between items-start gap-4 mb-6">
                         <div>
@@ -760,7 +871,9 @@ export default function App() {
                           <ul className="flex flex-col gap-2 text-[11px] text-[#999999]">
                             {serv.benefits.map((ben, x) => (
                               <li key={x} className="flex items-start gap-2">
-                                <span className="text-emerald-500 font-bold shrink-0">&bull;</span>
+                                <span className="text-emerald-500 font-bold shrink-0">
+                                  &bull;
+                                </span>
                                 <span>{ben}</span>
                               </li>
                             ))}
@@ -772,7 +885,10 @@ export default function App() {
                     <div className="bg-[#0A0A0A] px-6 py-4 border-t border-white/10 flex flex-wrap justify-between items-center gap-4">
                       <div className="flex gap-2">
                         {serv.subCategories.map((sub, j) => (
-                          <span key={j} className="text-[9px] font-mono bg-neutral-900 border border-white/10 px-2 py-0.5 text-neutral-400 rounded-none">
+                          <span
+                            key={j}
+                            className="text-[9px] font-mono bg-neutral-900 border border-white/10 px-2 py-0.5 text-neutral-400 rounded-none"
+                          >
                             {sub}
                           </span>
                         ))}
@@ -781,11 +897,11 @@ export default function App() {
                       <button
                         onClick={() => {
                           const routeMap: Record<string, ActivePage> = {
-                            'commercial': 'commercial-construction',
-                            'residential': 'residential-construction',
-                            'interiors': 'interior-design',
+                            commercial: "commercial-construction",
+                            residential: "residential-construction",
+                            interiors: "interior-design",
                           };
-                          handlePageChange(routeMap[serv.id] || 'contact');
+                          handlePageChange(routeMap[serv.id] || "contact");
                         }}
                         className="bg-[#C5A059]/15 hover:bg-[#C5A059] text-[#C5A059] hover:text-[#111111] px-4 py-1.5 border border-[#C5A059]/40 rounded-none text-xs font-bold transition-all"
                       >
@@ -799,22 +915,26 @@ export default function App() {
               {/* Dynamic Cost Estimator Inline Prompt */}
               <div className="bg-[#151515] p-6 rounded-none border border-[#C5A059]/20 flex flex-col md:flex-row items-center gap-6 justify-between mt-8 max-w-4xl mx-auto shadow-lg">
                 <div className="text-left font-sans">
-                  <h4 className="text-md font-bold text-white uppercase">Need a quick baseline build budget estimate?</h4>
-                  <p className="text-xs text-[#999999]">Instantly calculate pricing metrics for construction files based on Kisumu / West region indices.</p>
+                  <h4 className="text-md font-bold text-white uppercase">
+                    Need a quick baseline build budget estimate?
+                  </h4>
+                  <p className="text-xs text-[#999999]">
+                    Instantly calculate pricing metrics for construction files
+                    based on Kisumu / West region indices.
+                  </p>
                 </div>
                 <button
-                  onClick={() => handlePageChange('contact')}
+                  onClick={() => handlePageChange("contact")}
                   className="bg-[#C5A059] text-neutral-950 px-5 py-2.5 rounded-none text-xs font-bold uppercase tracking-wider scale-95 hover:scale-100 transition-transform shrink-0"
                 >
                   Configure Build Slider
                 </button>
               </div>
-
             </motion.div>
           )}
 
           {/* INDIVIDUAL SERVICES: COMMERCIAL BUILDERS */}
-          {activePage === 'commercial-construction' && (
+          {activePage === "commercial-construction" && (
             <motion.div
               key="com"
               initial={{ opacity: 0 }}
@@ -824,8 +944,8 @@ export default function App() {
               className="py-16 px-4 md:px-6 max-w-7xl mx-auto flex flex-col gap-12"
             >
               {/* Back to general services link */}
-              <button 
-                onClick={() => handlePageChange('services')} 
+              <button
+                onClick={() => handlePageChange("services")}
                 className="text-xs font-mono text-[#999999] hover:text-[#C5A059] text-left flex items-center gap-1 cursor-pointer"
               >
                 &lsaquo; Back to General Capabilities Directory
@@ -840,28 +960,42 @@ export default function App() {
                     Commercial Structural Construction Kenya
                   </h1>
                   <p className="text-xs text-[#999999] leading-relaxed">
-                    We deliver high-end commercial property assets including high-rise office plazas, retail structures, logistics warehouses, and institution complexes. Operating heavily under NCA-1 general contractor licensing guidelines, our engineering squad manages structural layout integrity from the initial soil tests through concrete core shell execution and unitized frame glazing.
+                    We deliver high-end commercial property assets including
+                    high-rise office plazas, retail structures, logistics
+                    warehouses, and institution complexes. Operating heavily
+                    under NCA-1 general contractor licensing guidelines, our
+                    engineering squad manages structural layout integrity from
+                    the initial soil tests through concrete core shell execution
+                    and unitized frame glazing.
                   </p>
 
                   <div className="bg-[#151515] p-5 rounded-none border border-white/10">
-                    <h4 className="text-xs font-mono text-white font-bold uppercase mb-2">Corporate Sourcing Guarantees:</h4>
+                    <h4 className="text-xs font-mono text-white font-bold uppercase mb-2">
+                      Corporate Sourcing Guarantees:
+                    </h4>
                     <p className="text-[11px] text-[#999999] leading-relaxed">
-                      We secure raw building rebar steel directly from localized certified steel manufacturers and manage shifting logistics models over night lines to prevent site congestion. All structural columns are subjected to strict stress curing parameters before loading slabs.
+                      We secure raw building rebar steel directly from localized
+                      certified steel manufacturers and manage shifting
+                      logistics models over night lines to prevent site
+                      congestion. All structural columns are subjected to strict
+                      stress curing parameters before loading slabs.
                     </p>
                   </div>
                 </div>
 
                 {/* Service image mockup */}
                 <div className="lg:col-span-5 rounded-none overflow-hidden border border-white/10 bg-neutral-900 shadow-2xl">
-                  <img 
-                    src="/src/assets/images/hero_banner_luxury_construction_1779616425828.png" 
-                    alt="Commercial Contracting by Ahzuriah" 
+                  <img
+                    src="/src/assets/images/hero_banner_luxury_construction_1779616425828.png"
+                    alt="Commercial Contracting by Ahzuriah"
                     referrerPolicy="no-referrer"
                     className="w-full h-[320px] object-cover"
                   />
                   <div className="p-4 bg-[#151515] flex justify-between items-center text-[10px] font-mono text-[#666666]">
                     <span>Glazed Unitized Framing Systems</span>
-                    <span className="text-emerald-500 font-semibold">&bull; Active Certification</span>
+                    <span className="text-emerald-500 font-semibold">
+                      &bull; Active Certification
+                    </span>
                   </div>
                 </div>
               </div>
@@ -869,16 +1003,34 @@ export default function App() {
               {/* Scope capability specifics */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8 py-4">
                 <div className="p-5 bg-[#151515] border border-white/10 rounded-none">
-                  <h4 className="text-xs font-mono font-bold uppercase text-[#C5A059] mb-2">Grade-A Plaza Foundations</h4>
-                  <p className="text-[11px] text-[#999999] leading-relaxed">Continuous flight auger piling, structural footing placement on unstable lakeside cotton clays, deep water-logged site damp-proofing matrices.</p>
+                  <h4 className="text-xs font-mono font-bold uppercase text-[#C5A059] mb-2">
+                    Grade-A Plaza Foundations
+                  </h4>
+                  <p className="text-[11px] text-[#999999] leading-relaxed">
+                    Continuous flight auger piling, structural footing placement
+                    on unstable lakeside cotton clays, deep water-logged site
+                    damp-proofing matrices.
+                  </p>
                 </div>
                 <div className="p-5 bg-[#151515] border border-white/10 rounded-none">
-                  <h4 className="text-xs font-mono font-bold uppercase text-[#C5A059] mb-2">Post-Tensioned Concrete</h4>
-                  <p className="text-[11px] text-[#999999] leading-relaxed">Executing post-tensioned wide-span floor slabs that eliminate bulky columns, maximizing rentable floor workspace layouts by up to 25%.</p>
+                  <h4 className="text-xs font-mono font-bold uppercase text-[#C5A059] mb-2">
+                    Post-Tensioned Concrete
+                  </h4>
+                  <p className="text-[11px] text-[#999999] leading-relaxed">
+                    Executing post-tensioned wide-span floor slabs that
+                    eliminate bulky columns, maximizing rentable floor workspace
+                    layouts by up to 25%.
+                  </p>
                 </div>
                 <div className="p-5 bg-[#151515] border border-white/10 rounded-none">
-                  <h4 className="text-xs font-mono font-bold uppercase text-[#C5A059] mb-2">Unitized Curtain Walling</h4>
-                  <p className="text-[11px] text-[#999999] leading-relaxed">High-status triple-pane thermal break glass structures with automated venting systems that curb operational HVAC consumption metrics.</p>
+                  <h4 className="text-xs font-mono font-bold uppercase text-[#C5A059] mb-2">
+                    Unitized Curtain Walling
+                  </h4>
+                  <p className="text-[11px] text-[#999999] leading-relaxed">
+                    High-status triple-pane thermal break glass structures with
+                    automated venting systems that curb operational HVAC
+                    consumption metrics.
+                  </p>
                 </div>
               </div>
 
@@ -889,15 +1041,36 @@ export default function App() {
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-4 gap-6">
                   {[
-                    { title: 'Project Mobilize', desc: 'Detailing site safety protocols, setting excavation barriers, static load piling on volcanic clay soils.' },
-                    { title: 'Core Erection', desc: 'Constructing column systems, pouring post-tension concrete framing, assembling structural cores.' },
-                    { title: 'Envelope Integration', desc: 'Assembling unitized curtain glass spans, waterproofing, fitting HVAC conduits.' },
-                    { title: 'Commissioning', desc: 'Certifying building fire vectors, testing dynamic MEP systems, county handover approvals.' }
+                    {
+                      title: "Project Mobilize",
+                      desc: "Detailing site safety protocols, setting excavation barriers, static load piling on volcanic clay soils.",
+                    },
+                    {
+                      title: "Core Erection",
+                      desc: "Constructing column systems, pouring post-tension concrete framing, assembling structural cores.",
+                    },
+                    {
+                      title: "Envelope Integration",
+                      desc: "Assembling unitized curtain glass spans, waterproofing, fitting HVAC conduits.",
+                    },
+                    {
+                      title: "Commissioning",
+                      desc: "Certifying building fire vectors, testing dynamic MEP systems, county handover approvals.",
+                    },
                   ].map((proc, index) => (
-                    <div key={index} className="relative border-l border-[#C5A059]/30 pl-4">
-                      <span className="text-[10px] font-mono text-[#C5A885] font-black block mb-1">0{index + 1}</span>
-                      <h4 className="text-xs font-sans font-bold text-white uppercase mb-1">{proc.title}</h4>
-                      <p className="text-[11px] text-[#888888] leading-tight">{proc.desc}</p>
+                    <div
+                      key={index}
+                      className="relative border-l border-[#C5A059]/30 pl-4"
+                    >
+                      <span className="text-[10px] font-mono text-[#C5A885] font-black block mb-1">
+                        0{index + 1}
+                      </span>
+                      <h4 className="text-xs font-sans font-bold text-white uppercase mb-1">
+                        {proc.title}
+                      </h4>
+                      <p className="text-[11px] text-[#888888] leading-tight">
+                        {proc.desc}
+                      </p>
                     </div>
                   ))}
                 </div>
@@ -905,18 +1078,27 @@ export default function App() {
 
               {/* FAQ */}
               <div className="max-w-3xl mx-auto flex flex-col gap-4 mt-4">
-                <h3 className="text-sm font-mono uppercase text-center text-[#999999] mb-2">Commercial Construction Desk FAQs</h3>
+                <h3 className="text-sm font-mono uppercase text-center text-[#999999] mb-2">
+                  Commercial Construction Desk FAQs
+                </h3>
                 <div className="bg-[#151515] p-5 rounded-none border border-white/10">
-                  <h4 className="text-xs font-bold text-white uppercase mb-2">What is the typical timeframe for a 5-storey plaza shell?</h4>
-                  <p className="text-[11px] text-[#999999] leading-relaxed">Using standard precast integration and our volumetric concrete batch networks, we construct the reinforced concrete core and frame structure within 9 months, and complete full facade envelopes and MEP commissioning within an additional 6 months.</p>
+                  <h4 className="text-xs font-bold text-white uppercase mb-2">
+                    What is the typical timeframe for a 5-storey plaza shell?
+                  </h4>
+                  <p className="text-[11px] text-[#999999] leading-relaxed">
+                    Using standard precast integration and our volumetric
+                    concrete batch networks, we construct the reinforced
+                    concrete core and frame structure within 9 months, and
+                    complete full facade envelopes and MEP commissioning within
+                    an additional 6 months.
+                  </p>
                 </div>
               </div>
-
             </motion.div>
           )}
 
           {/* INDIVIDUAL SERVICES: RESIDENTIAL VILLAS */}
-          {activePage === 'residential-construction' && (
+          {activePage === "residential-construction" && (
             <motion.div
               key="res"
               initial={{ opacity: 0 }}
@@ -925,8 +1107,8 @@ export default function App() {
               transition={{ duration: 0.3 }}
               className="py-16 px-4 md:px-6 max-w-7xl mx-auto flex flex-col gap-12"
             >
-              <button 
-                onClick={() => handlePageChange('services')} 
+              <button
+                onClick={() => handlePageChange("services")}
                 className="text-xs font-mono text-[#999999] hover:text-[#C5A059] text-left flex items-center gap-1 cursor-pointer"
               >
                 &lsaquo; Back to General Capabilities Directory
@@ -941,27 +1123,42 @@ export default function App() {
                     Custom Luxury Residential Villas Kenya
                   </h1>
                   <p className="text-xs text-[#999999] leading-relaxed">
-                    We construct modern luxury residential architectural landmarks. Whether building on the steep volcanic gradients of Riat Hills or water-clinging plots along Lake Victoria, we manage soil stabilization, pile anchoring, and earthquake loading layouts with extreme precision. We couple world-class civil masonry with luxury timber joinery, floor-to-ceiling panoramic glass balconies, and ecological greywater filtration pools.
+                    We construct modern luxury residential architectural
+                    landmarks. Whether building on the steep volcanic gradients
+                    of Riat Hills or water-clinging plots along Lake Victoria,
+                    we manage soil stabilization, pile anchoring, and earthquake
+                    loading layouts with extreme precision. We couple
+                    world-class civil masonry with luxury timber joinery,
+                    floor-to-ceiling panoramic glass balconies, and ecological
+                    greywater filtration pools.
                   </p>
 
                   <div className="bg-[#151515] p-5 rounded-none border border-white/10">
-                    <h4 className="text-xs font-mono text-white font-bold uppercase mb-2">Slope Security details:</h4>
+                    <h4 className="text-xs font-mono text-white font-bold uppercase mb-2">
+                      Slope Security details:
+                    </h4>
                     <p className="text-[11px] text-[#999999] leading-relaxed">
-                      Lakeside Black Cotton soil contracts and expands violently by season. To secure our residences from foundation fracture lines, we execute continuous deep concrete footing structures and tie-beam grids directly embedded into stable volcanic basalt bedrock.
+                      Lakeside Black Cotton soil contracts and expands violently
+                      by season. To secure our residences from foundation
+                      fracture lines, we execute continuous deep concrete
+                      footing structures and tie-beam grids directly embedded
+                      into stable volcanic basalt bedrock.
                     </p>
                   </div>
                 </div>
 
                 <div className="lg:col-span-5 rounded-none overflow-hidden border border-white/10 bg-neutral-900 shadow-2xl">
-                  <img 
-                    src="/src/assets/images/residential_villa_1779616462713.png" 
-                    alt="Luxury Custom Lakeside Villa by Ahzuriah" 
+                  <img
+                    src="/src/assets/images/residential_villa_1779616462713.png"
+                    alt="Luxury Custom Lakeside Villa by Ahzuriah"
                     referrerPolicy="no-referrer"
                     className="w-full h-[320px] object-cover"
                   />
                   <div className="p-4 bg-[#151515] flex justify-between items-center text-[10px] font-mono text-[#666666]">
                     <span>Cantilever Balcony Deck Systems</span>
-                    <span className="text-emerald-500 font-semibold">&bull; NCA Registered Villa</span>
+                    <span className="text-emerald-500 font-semibold">
+                      &bull; NCA Registered Villa
+                    </span>
                   </div>
                 </div>
               </div>
@@ -969,33 +1166,59 @@ export default function App() {
               {/* Key specialties */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="p-5 bg-[#151515] border border-white/10 rounded-none">
-                  <h4 className="text-xs font-mono font-bold uppercase text-[#C5A059] mb-2">Bespoke Timber Joinery</h4>
-                  <p className="text-[11px] text-[#999999] leading-relaxed">Solid core cedar wood partitions, security portals, customized integrated walk-in wardrobes from our high-end carpentry facility.</p>
+                  <h4 className="text-xs font-mono font-bold uppercase text-[#C5A059] mb-2">
+                    Bespoke Timber Joinery
+                  </h4>
+                  <p className="text-[11px] text-[#999999] leading-relaxed">
+                    Solid core cedar wood partitions, security portals,
+                    customized integrated walk-in wardrobes from our high-end
+                    carpentry facility.
+                  </p>
                 </div>
                 <div className="p-5 bg-[#151515] border border-white/10 rounded-none">
-                  <h4 className="text-xs font-mono font-bold uppercase text-[#C5A059] mb-2">Volumetric concrete</h4>
-                  <p className="text-[11px] text-[#999999] leading-relaxed">High-fidelity raw concrete walls, structural cantilevers, and dynamic stairwells modeled around European minimalist frameworks.</p>
+                  <h4 className="text-xs font-mono font-bold uppercase text-[#C5A059] mb-2">
+                    Volumetric concrete
+                  </h4>
+                  <p className="text-[11px] text-[#999999] leading-relaxed">
+                    High-fidelity raw concrete walls, structural cantilevers,
+                    and dynamic stairwells modeled around European minimalist
+                    frameworks.
+                  </p>
                 </div>
                 <div className="p-5 bg-[#151515] border border-white/10 rounded-none">
-                  <h4 className="text-xs font-mono font-bold uppercase text-[#C5A059] mb-2">Rainwater Harvesting</h4>
-                  <p className="text-[11px] text-[#999999] leading-relaxed">Integrating complete structural storm collectors, greywater purification beds and reverse-osmosis filtration setups for off-grid luxury utility.</p>
+                  <h4 className="text-xs font-mono font-bold uppercase text-[#C5A059] mb-2">
+                    Rainwater Harvesting
+                  </h4>
+                  <p className="text-[11px] text-[#999999] leading-relaxed">
+                    Integrating complete structural storm collectors, greywater
+                    purification beds and reverse-osmosis filtration setups for
+                    off-grid luxury utility.
+                  </p>
                 </div>
               </div>
 
               {/* Accordion FAQ for residential build */}
               <div className="max-w-3xl mx-auto flex flex-col gap-4">
-                <h3 className="text-sm font-mono uppercase text-center text-[#999999] mb-2">Residential Building Inquiries</h3>
+                <h3 className="text-sm font-mono uppercase text-center text-[#999999] mb-2">
+                  Residential Building Inquiries
+                </h3>
                 <div className="bg-[#151515] p-5 rounded-none border border-white/10">
-                  <h4 className="text-xs font-bold text-white uppercase mb-2">Can you handle county approvals and NEMA certifications?</h4>
-                  <p className="text-[11px] text-[#999999] leading-relaxed">Yes. Our project management office compiles all structural drawings, localized environmental impact statements (EIA), and registers the project with NEMA and the respective county development board to manage permits fluidly.</p>
+                  <h4 className="text-xs font-bold text-white uppercase mb-2">
+                    Can you handle county approvals and NEMA certifications?
+                  </h4>
+                  <p className="text-[11px] text-[#999999] leading-relaxed">
+                    Yes. Our project management office compiles all structural
+                    drawings, localized environmental impact statements (EIA),
+                    and registers the project with NEMA and the respective
+                    county development board to manage permits fluidly.
+                  </p>
                 </div>
               </div>
-
             </motion.div>
           )}
 
           {/* INDIVIDUAL SERVICES: INTERIOR DESIGN */}
-          {activePage === 'interior-design' && (
+          {activePage === "interior-design" && (
             <motion.div
               key="int"
               initial={{ opacity: 0 }}
@@ -1004,8 +1227,8 @@ export default function App() {
               transition={{ duration: 0.3 }}
               className="py-16 px-4 md:px-6 max-w-7xl mx-auto flex flex-col gap-12"
             >
-              <button 
-                onClick={() => handlePageChange('services')} 
+              <button
+                onClick={() => handlePageChange("services")}
                 className="text-xs font-mono text-[#999999] hover:text-[#C5A059] text-left flex items-center gap-1 cursor-pointer"
               >
                 &lsaquo; Back to General Capabilities Directory
@@ -1020,27 +1243,41 @@ export default function App() {
                     Bespoke Interior Design & Fitout Kenya
                   </h1>
                   <p className="text-xs text-[#999999] leading-relaxed">
-                    We construct spectacular corporate and residential interiors. Operating our own local milling and workshop allows us to detail custom wall panel sections, executive desks, and acoustic grids to precise metric tolerances. From luxury residential lobbies to high-status regional maritime offices, our craftsmanship utilizes imported marbles, rich timber trims, and conceals AV cabling networks cleanly behind bespoke architectural moldings.
+                    We construct spectacular corporate and residential
+                    interiors. Operating our own local milling and workshop
+                    allows us to detail custom wall panel sections, executive
+                    desks, and acoustic grids to precise metric tolerances. From
+                    luxury residential lobbies to high-status regional maritime
+                    offices, our craftsmanship utilizes imported marbles, rich
+                    timber trims, and conceals AV cabling networks cleanly
+                    behind bespoke architectural moldings.
                   </p>
 
                   <div className="bg-[#151515] p-5 rounded-none border border-white/10">
-                    <h4 className="text-xs font-mono text-white font-bold uppercase mb-2">Acoustics & Lighting:</h4>
+                    <h4 className="text-xs font-mono text-white font-bold uppercase mb-2">
+                      Acoustics & Lighting:
+                    </h4>
                     <p className="text-[11px] text-[#999999] leading-relaxed">
-                      Corporate spaces must mitigate floor resonance. We install fiberglass soundboards wrapped in premium canvas paneling and pair them with dynamic linear light channels with preloaded room templates for different presentation modes.
+                      Corporate spaces must mitigate floor resonance. We install
+                      fiberglass soundboards wrapped in premium canvas paneling
+                      and pair them with dynamic linear light channels with
+                      preloaded room templates for different presentation modes.
                     </p>
                   </div>
                 </div>
 
                 <div className="lg:col-span-5 rounded-none overflow-hidden border border-white/10 bg-neutral-900 shadow-2xl">
-                  <img 
-                    src="/src/assets/images/luxury_interior_design_1779616481038.png" 
-                    alt="Bespoke luxury corporate Interior Design by Ahzuriah" 
+                  <img
+                    src="/src/assets/images/luxury_interior_design_1779616481038.png"
+                    alt="Bespoke luxury corporate Interior Design by Ahzuriah"
                     referrerPolicy="no-referrer"
                     className="w-full h-[320px] object-cover"
                   />
                   <div className="p-4 bg-[#151515] flex justify-between items-center text-[10px] font-mono text-[#666666]">
                     <span>CNC-Milled Wall Paneling</span>
-                    <span className="text-emerald-500 font-semibold">&bull; Active Design</span>
+                    <span className="text-emerald-500 font-semibold">
+                      &bull; Active Design
+                    </span>
                   </div>
                 </div>
               </div>
@@ -1048,24 +1285,40 @@ export default function App() {
               {/* Specialties */}
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div className="p-5 bg-[#151515] border border-white/10 rounded-none">
-                  <h4 className="text-xs font-mono font-bold uppercase text-[#C5A059] mb-2">Custom Millwork & Cabinetry</h4>
-                  <p className="text-[11px] text-[#999999] leading-relaxed font-sans">Precision jointing, integrated soft-close channels, rich walnut and cherry timber finishes assembled in our specialized workshop.</p>
+                  <h4 className="text-xs font-mono font-bold uppercase text-[#C5A059] mb-2">
+                    Custom Millwork & Cabinetry
+                  </h4>
+                  <p className="text-[11px] text-[#999999] leading-relaxed font-sans">
+                    Precision jointing, integrated soft-close channels, rich
+                    walnut and cherry timber finishes assembled in our
+                    specialized workshop.
+                  </p>
                 </div>
                 <div className="p-5 bg-[#151515] border border-white/10 rounded-none">
-                  <h4 className="text-xs font-mono font-bold uppercase text-[#C5A059] mb-2">Acoustic Engineering</h4>
-                  <p className="text-[11px] text-[#999999] leading-relaxed font-sans">Sub-40dB sound isolation inside meeting rooms using custom density rockwool fills and slotted cedar panels.</p>
+                  <h4 className="text-xs font-mono font-bold uppercase text-[#C5A059] mb-2">
+                    Acoustic Engineering
+                  </h4>
+                  <p className="text-[11px] text-[#999999] leading-relaxed font-sans">
+                    Sub-40dB sound isolation inside meeting rooms using custom
+                    density rockwool fills and slotted cedar panels.
+                  </p>
                 </div>
                 <div className="p-5 bg-[#151515] border border-white/10 rounded-none">
-                  <h4 className="text-xs font-mono font-bold uppercase text-[#C5A059] mb-2">Dynamic Light Systems</h4>
-                  <p className="text-[11px] text-[#999999] leading-relaxed font-sans">Fully integrated low-voltage LED linear configurations with wall-mounted tactile scenes, adjusting color index seamlessly.</p>
+                  <h4 className="text-xs font-mono font-bold uppercase text-[#C5A059] mb-2">
+                    Dynamic Light Systems
+                  </h4>
+                  <p className="text-[11px] text-[#999999] leading-relaxed font-sans">
+                    Fully integrated low-voltage LED linear configurations with
+                    wall-mounted tactile scenes, adjusting color index
+                    seamlessly.
+                  </p>
                 </div>
               </div>
-
             </motion.div>
           )}
 
           {/* PORTFOLIO PAGE VIEW */}
-          {activePage === 'portfolio' && (
+          {activePage === "portfolio" && (
             <motion.div
               key="portfolio"
               initial={{ opacity: 0 }}
@@ -1082,21 +1335,32 @@ export default function App() {
                   Ahzuriah Portfolio Showcase
                 </h1>
                 <p className="text-xs text-[#999999] mt-2 max-w-xl">
-                  Real engineering solutions targeting complex geographical zones and logistical limits in Kenya.
+                  Real engineering solutions targeting complex geographical
+                  zones and logistical limits in Kenya.
                 </p>
               </div>
 
               {/* Dynamic Filter bar inside page */}
               <div className="flex flex-wrap gap-2 items-center">
-                <span className="text-xs font-mono text-[#666666] uppercase mr-3">Filter projects:</span>
-                {(['all', 'commercial', 'residential', 'interiors', 'renovation'] as const).map((cat) => (
+                <span className="text-xs font-mono text-[#666666] uppercase mr-3">
+                  Filter projects:
+                </span>
+                {(
+                  [
+                    "all",
+                    "commercial",
+                    "residential",
+                    "interiors",
+                    "renovation",
+                  ] as const
+                ).map((cat) => (
                   <button
                     key={cat}
                     onClick={() => setSelectedCategory(cat)}
                     className={`px-4 py-2 border text-xs font-mono uppercase tracking-wider rounded-none transition-colors ${
-                      selectedCategory === cat 
-                        ? 'border-[#C5A059] bg-[#C5A059]/15 text-[#C5A059]' 
-                        : 'border-white/10 bg-[#1a1a1a] text-[#999999] hover:text-white'
+                      selectedCategory === cat
+                        ? "border-[#C5A059] bg-[#C5A059]/15 text-[#C5A059]"
+                        : "border-white/10 bg-[#1a1a1a] text-[#999999] hover:text-white"
                     }`}
                   >
                     {cat}
@@ -1107,15 +1371,15 @@ export default function App() {
               {/* Full Detailed Grid of Case Studies */}
               <div className="flex flex-col gap-16">
                 {filteredProjects.map((proj) => (
-                  <div 
+                  <div
                     key={proj.id}
                     className="bg-[#151515] border border-white/10 rounded-none overflow-hidden flex flex-col lg:flex-row shadow-2xl"
                   >
                     {/* Visual Segment */}
                     <div className="lg:w-5/12 h-[300px] lg:h-auto overflow-hidden relative">
-                      <img 
-                        src={proj.imageUrl} 
-                        alt={proj.name} 
+                      <img
+                        src={proj.imageUrl}
+                        alt={proj.name}
                         referrerPolicy="no-referrer"
                         className="w-full h-full object-cover"
                       />
@@ -1129,9 +1393,16 @@ export default function App() {
                       <div>
                         {/* Meta lines */}
                         <div className="flex flex-wrap items-center gap-x-6 gap-y-1.5 text-xs font-mono text-[#999999] mb-4 border-b border-white/10 pb-4">
-                          <span className="text-white font-bold uppercase">{proj.location}</span>
+                          <span className="text-white font-bold uppercase">
+                            {proj.location}
+                          </span>
                           <span>Timeline: {proj.timeline}</span>
-                          <span>Value: <strong className="text-[#C5A059]">{proj.value}</strong></span>
+                          <span>
+                            Value:{" "}
+                            <strong className="text-[#C5A059]">
+                              {proj.value}
+                            </strong>
+                          </span>
                         </div>
 
                         <h3 className="text-xl md:text-2xl font-sans font-black text-white uppercase tracking-wider mb-4">
@@ -1166,22 +1437,23 @@ export default function App() {
                       {/* Bullet Features bottom line */}
                       <div className="mt-6 pt-6 border-t border-white/10 flex flex-wrap gap-2">
                         {proj.keyFeatures.map((feat, b) => (
-                          <span key={b} className="text-[10px] font-mono bg-neutral-900 border border-white/10 px-2.5 py-1 text-neutral-400 rounded-sm">
+                          <span
+                            key={b}
+                            className="text-[10px] font-mono bg-neutral-900 border border-white/10 px-2.5 py-1 text-neutral-400 rounded-sm"
+                          >
                             &check; {feat}
                           </span>
                         ))}
                       </div>
-
                     </div>
                   </div>
                 ))}
               </div>
-
             </motion.div>
           )}
 
           {/* PROCESS PAGE VIEW */}
-          {activePage === 'process' && (
+          {activePage === "process" && (
             <motion.div
               key="process"
               initial={{ opacity: 0 }}
@@ -1198,7 +1470,9 @@ export default function App() {
                   Ahzuriah Turnkey Operational Flow
                 </h1>
                 <p className="text-xs text-[#999999] mt-2 max-w-xl">
-                  A comprehensive engineering-grade workflow that eliminates budget surprises, structural settling errors, and county compliance blocks.
+                  A comprehensive engineering-grade workflow that eliminates
+                  budget surprises, structural settling errors, and county
+                  compliance blocks.
                 </p>
               </div>
 
@@ -1206,43 +1480,65 @@ export default function App() {
               <div className="flex flex-col gap-10">
                 {[
                   {
-                    phase: 'PHASE 01',
-                    title: 'PRE-CONSTRUCTION & SURVEY DIRECTORY',
-                    sub: 'Soil Stability Evaluation & Spatial County Planning',
-                    desc: 'We map site contours with laser equipment and take cylindrical core soil profiles down to 10 meters before putting pencil to paper. If building along water margins or volcanic slants, we determine soil shear ratings and compile county planning submittals beforehand.',
-                    items: ['Volcanic/cotton clay strength checks', 'Boundary title and surveyor checks', 'Resort, corporate, or villa space re-planning blueprinting']
+                    phase: "PHASE 01",
+                    title: "PRE-CONSTRUCTION & SURVEY DIRECTORY",
+                    sub: "Soil Stability Evaluation & Spatial County Planning",
+                    desc: "We map site contours with laser equipment and take cylindrical core soil profiles down to 10 meters before putting pencil to paper. If building along water margins or volcanic slants, we determine soil shear ratings and compile county planning submittals beforehand.",
+                    items: [
+                      "Volcanic/cotton clay strength checks",
+                      "Boundary title and surveyor checks",
+                      "Resort, corporate, or villa space re-planning blueprinting",
+                    ],
                   },
                   {
-                    phase: 'PHASE 02',
-                    title: 'COST BUDGET SECURITY & HEDGING',
-                    sub: 'Curbing Material Surcharges & Bill of Quantities',
-                    desc: 'We protect project budgets from volatile raw market fluctuations. We draft complete itemized Bills of Quantities and compile raw sourcing parameters. By partnering with heavy steel mills and regional concrete batch plants, we book raw materials in advance.',
-                    items: ['100% Locked itemized Bills of Quantities', 'Steel and concrete price booking agreements', 'Zero hidden surcharge and zero mid-way inflation policy']
+                    phase: "PHASE 02",
+                    title: "COST BUDGET SECURITY & HEDGING",
+                    sub: "Curbing Material Surcharges & Bill of Quantities",
+                    desc: "We protect project budgets from volatile raw market fluctuations. We draft complete itemized Bills of Quantities and compile raw sourcing parameters. By partnering with heavy steel mills and regional concrete batch plants, we book raw materials in advance.",
+                    items: [
+                      "100% Locked itemized Bills of Quantities",
+                      "Steel and concrete price booking agreements",
+                      "Zero hidden surcharge and zero mid-way inflation policy",
+                    ],
                   },
                   {
-                    phase: 'PHASE 03',
-                    title: 'REGULATORY COMPLIANCE MANAGEMENT',
-                    sub: 'NEMA Approvals, Structural Registrals & NCA Permits',
-                    desc: 'Building without correct NEMA or NCA registrations leads to severe county construction suspension notices. Ahzuriah handles every environmental impact assessment report, logs blueprints under local state registries, and secures compliance certs.',
-                    items: ['NEMA Environment Impact Assessments (EIA)', 'NCA project registration files', 'Respective County physical development permission approvals']
+                    phase: "PHASE 03",
+                    title: "REGULATORY COMPLIANCE MANAGEMENT",
+                    sub: "NEMA Approvals, Structural Registrals & NCA Permits",
+                    desc: "Building without correct NEMA or NCA registrations leads to severe county construction suspension notices. Ahzuriah handles every environmental impact assessment report, logs blueprints under local state registries, and secures compliance certs.",
+                    items: [
+                      "NEMA Environment Impact Assessments (EIA)",
+                      "NCA project registration files",
+                      "Respective County physical development permission approvals",
+                    ],
                   },
                   {
-                    phase: 'PHASE 04',
-                    title: 'CIVIL DEPLOYMENT & CORE ERECTION',
-                    sub: 'Volumetric Concrete Batches & Masonry Shells',
-                    desc: 'Our construction crew anchors piling columns, pours post-tensioned wide-span concrete frames, and manages perimeter safety mesh structures. A dedicated structural supervisor reviews concrete cube compression indices before loading slabs.',
-                    items: ['Laboratory tested concrete batch mixtures', 'Whip-crack dust mitigation protocols and acoustic screens', 'NCA safety incident monitors on-site']
+                    phase: "PHASE 04",
+                    title: "CIVIL DEPLOYMENT & CORE ERECTION",
+                    sub: "Volumetric Concrete Batches & Masonry Shells",
+                    desc: "Our construction crew anchors piling columns, pours post-tensioned wide-span concrete frames, and manages perimeter safety mesh structures. A dedicated structural supervisor reviews concrete cube compression indices before loading slabs.",
+                    items: [
+                      "Laboratory tested concrete batch mixtures",
+                      "Whip-crack dust mitigation protocols and acoustic screens",
+                      "NCA safety incident monitors on-site",
+                    ],
                   },
                   {
-                    phase: 'PHASE 05',
-                    title: 'ARCHITECTURAL FINISHING & HANDOVER',
-                    sub: 'Turnkey Millwork, Smart Systems & Handover Certs',
-                    desc: 'We finish the building shell with customized high-end marble backdrops, CNC-jointed timber cabinetry, and linear ambient linear lights. We test plumbing systems for air stress and hand over structural files with NCA occupancy certificates.',
-                    items: ['CNC-profiled carpentry and acoustic ceiling fits', 'Complete water structural leakage check', 'NCA compliant occupancy certificate delivery']
-                  }
+                    phase: "PHASE 05",
+                    title: "ARCHITECTURAL FINISHING & HANDOVER",
+                    sub: "Turnkey Millwork, Smart Systems & Handover Certs",
+                    desc: "We finish the building shell with customized high-end marble backdrops, CNC-jointed timber cabinetry, and linear ambient linear lights. We test plumbing systems for air stress and hand over structural files with NCA occupancy certificates.",
+                    items: [
+                      "CNC-profiled carpentry and acoustic ceiling fits",
+                      "Complete water structural leakage check",
+                      "NCA compliant occupancy certificate delivery",
+                    ],
+                  },
                 ].map((step, k) => (
-                  <div key={k} className="bg-[#151515] p-6 md:p-8 rounded-none border border-white/10 flex flex-col lg:flex-row gap-8 items-start relative overflow-hidden">
-                    
+                  <div
+                    key={k}
+                    className="bg-[#151515] p-6 md:p-8 rounded-none border border-white/10 flex flex-col lg:flex-row gap-8 items-start relative overflow-hidden"
+                  >
                     {/* Phase identifier big */}
                     <div className="lg:w-2/12 shrink-0">
                       <span className="text-xs font-mono font-bold bg-[#C5A059]/10 border border-[#C5A059]/20 text-[#C5A059] px-3.5 py-1.5 rounded-full inline-block">
@@ -1266,22 +1562,23 @@ export default function App() {
 
                       <div className="flex flex-wrap gap-2.5 mt-2">
                         {step.items.map((it, z) => (
-                          <span key={z} className="text-[10px] font-mono bg-neutral-900 border border-white/10 px-3 py-1 rounded-none text-neutral-300">
+                          <span
+                            key={z}
+                            className="text-[10px] font-mono bg-neutral-900 border border-white/10 px-3 py-1 rounded-none text-neutral-300"
+                          >
                             &bull; {it}
                           </span>
                         ))}
                       </div>
                     </div>
-
                   </div>
                 ))}
               </div>
-
             </motion.div>
           )}
 
           {/* FAQS PAGE VIEW */}
-          {activePage === 'faq' && (
+          {activePage === "faq" && (
             <motion.div
               key="faq"
               initial={{ opacity: 0 }}
@@ -1298,7 +1595,8 @@ export default function App() {
                   Frequently Asked Questions
                 </h1>
                 <p className="text-xs text-[#999999] mt-2">
-                  Everything you need to know about pricing, NCA licensing, architectural plans, and payment parameters in Kenya.
+                  Everything you need to know about pricing, NCA licensing,
+                  architectural plans, and payment parameters in Kenya.
                 </p>
               </div>
 
@@ -1306,34 +1604,34 @@ export default function App() {
               <div className="flex flex-col gap-3">
                 {[
                   {
-                    q: 'Which NCA licensing classification does Ahzuriah Construction operate under?',
-                    a: 'Ahzuriah operates under prime National Construction Authority (NCA) of Kenya general contractor certifications. This license authorizes us to structurally execute substantial multi-million shillling corporate commercial builds, civil road/utilities works, and exclusive residential projects across Western region, Kisumu, and Nairobi metropolis.'
+                    q: "Which NCA licensing classification does Ahzuriah Construction operate under?",
+                    a: "Ahzuriah operates under prime National Construction Authority (NCA) of Kenya general contractor certifications. This license authorizes us to structurally execute substantial multi-million shillling corporate commercial builds, civil road/utilities works, and exclusive residential projects across Western region, Kisumu, and Nairobi metropolis.",
                   },
                   {
-                    q: 'How does Ahzuriah protect clients from steel and cement price inflation?',
-                    a: 'Raw market price variance is a major cause of unfinished shells in East Africa. When we sign an agreement, we execute bulk material pre-purchasing agreements from heavy manufacturers. We shelter raw materials in our safe storage facilities, locking in prices. Your quotation remains 100% constant without mid-way additions.'
+                    q: "How does Ahzuriah protect clients from steel and cement price inflation?",
+                    a: "Raw market price variance is a major cause of unfinished shells in East Africa. When we sign an agreement, we execute bulk material pre-purchasing agreements from heavy manufacturers. We shelter raw materials in our safe storage facilities, locking in prices. Your quotation remains 100% constant without mid-way additions.",
                   },
                   {
-                    q: 'Do you design the initial architectural blueprints in-house?',
-                    a: 'Yes, we are a professional design-build constructor. Our in-house desk features lead architects and structural engineers who compile spatial designs, renders, and MEP blueprints synchronously. If you already have your own independent architect, we audit the details for structural efficiency and county-code alignment before providing a project quotation.'
+                    q: "Do you design the initial architectural blueprints in-house?",
+                    a: "Yes, we are a professional design-build constructor. Our in-house desk features lead architects and structural engineers who compile spatial designs, renders, and MEP blueprints synchronously. If you already have your own independent architect, we audit the details for structural efficiency and county-code alignment before providing a project quotation.",
                   },
                   {
-                    q: 'What foundation methods are executed on Kisumu lakefront margins and Riat Hills slants?',
-                    a: 'Kisumu represents a highly specialized soil zone. Lakeside properties sit on silty, unstable cotton clays, whereas Riat Hills features volcanic slopes. We execute deep continuous hydraulic static concrete micro-piling down to solid bedrock to secure our lakeside foundations, and reinforce steep volcanic slants with retaining concrete curtain walls.'
+                    q: "What foundation methods are executed on Kisumu lakefront margins and Riat Hills slants?",
+                    a: "Kisumu represents a highly specialized soil zone. Lakeside properties sit on silty, unstable cotton clays, whereas Riat Hills features volcanic slopes. We execute deep continuous hydraulic static concrete micro-piling down to solid bedrock to secure our lakeside foundations, and reinforce steep volcanic slants with retaining concrete curtain walls.",
                   },
                   {
-                    q: 'What are the payment parameters and structural milestones?',
-                    a: 'We operate under a clear milestone schedule. We never demand massive upfront sums. Payments are split by verifiable structural phases, e.g., Foundation completion 20%, Framing core shell 25%, Mechanical plumbing envelopes 25%, Facades and finishing 20%, Client validation & occupancy handover keys 10%.'
+                    q: "What are the payment parameters and structural milestones?",
+                    a: "We operate under a clear milestone schedule. We never demand massive upfront sums. Payments are split by verifiable structural phases, e.g., Foundation completion 20%, Framing core shell 25%, Mechanical plumbing envelopes 25%, Facades and finishing 20%, Client validation & occupancy handover keys 10%.",
                   },
                   {
-                    q: 'Are your projects insured against liability or delay hazards?',
-                    a: 'Yes. Every project site operated by Ahzuriah is backed by comprehensive Contractor&apos;s All Risks (CAR) liability insurance coverage and Work Injury Benefits Act (WIBA) compliance panels. This ensures full insulation from accidental damage, weather acts, or site crew liability.'
-                  }
+                    q: "Are your projects insured against liability or delay hazards?",
+                    a: "Yes. Every project site operated by Ahzuriah is backed by comprehensive Contractor&apos;s All Risks (CAR) liability insurance coverage and Work Injury Benefits Act (WIBA) compliance panels. This ensures full insulation from accidental damage, weather acts, or site crew liability.",
+                  },
                 ].map((faqObj, index) => {
                   const isOpen = activeFaq === index;
                   return (
-                    <div 
-                      key={index} 
+                    <div
+                      key={index}
                       className="bg-[#151515] border border-white/10 rounded-none overflow-hidden"
                     >
                       <button
@@ -1341,7 +1639,11 @@ export default function App() {
                         className="w-full text-left p-5 flex justify-between items-center text-xs font-bold uppercase tracking-wide text-white hover:text-[#C5A059] transition-colors cursor-pointer"
                       >
                         <span>{faqObj.q}</span>
-                        {isOpen ? <Minus className="w-4 h-4 text-[#C5A059] shrink-0 ml-4" /> : <Plus className="w-4 h-4 text-slate-500 shrink-0 ml-4" />}
+                        {isOpen ? (
+                          <Minus className="w-4 h-4 text-[#C5A059] shrink-0 ml-4" />
+                        ) : (
+                          <Plus className="w-4 h-4 text-slate-500 shrink-0 ml-4" />
+                        )}
                       </button>
 
                       {isOpen && (
@@ -1353,12 +1655,11 @@ export default function App() {
                   );
                 })}
               </div>
-
             </motion.div>
           )}
 
           {/* CONTACT PAGE VIEW */}
-          {activePage === 'contact' && (
+          {activePage === "contact" && (
             <motion.div
               key="contact"
               initial={{ opacity: 0 }}
@@ -1375,15 +1676,14 @@ export default function App() {
                   Connect with our Engineering Team
                 </h1>
                 <p className="text-xs text-[#999999] mt-2 max-w-xl">
-                  Contact our active sales desk inside Mega Plaza Kisumu to book a structural blueprint evaluation or a physical land survey.
+                  Contact our active sales desk inside Mega Plaza Kisumu to book
+                  a structural blueprint evaluation or a physical land survey.
                 </p>
               </div>
 
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-                
                 {/* Left col contact details list */}
                 <div className="lg:col-span-5 flex flex-col gap-8">
-                  
                   <div className="bg-[#151515] p-6 rounded-none border border-white/10 flex flex-col gap-6">
                     <h3 className="text-md font-sans font-black text-white uppercase tracking-wider border-b border-white/10 pb-3">
                       Corporate Coordinates
@@ -1397,8 +1697,12 @@ export default function App() {
                         <span className="text-white block font-extrabold uppercase text-[10px] tracking-wider mb-1 font-mono">
                           Regional Headquarters Kisumu:
                         </span>
-                        <p className="text-[#cccccc] mb-1 font-medium">Mega Plaza Wing B, 4th Floor</p>
-                        <p className="text-[#888888]">Oginga Odinga Street, Kisumu Central District, Kenya</p>
+                        <p className="text-[#cccccc] mb-1 font-medium">
+                          Mega Plaza Wing B, 4th Floor
+                        </p>
+                        <p className="text-[#888888]">
+                          Oginga Odinga Street, Kisumu Central District, Kenya
+                        </p>
                       </div>
                     </div>
 
@@ -1410,10 +1714,15 @@ export default function App() {
                         <span className="text-white block font-extrabold uppercase text-[10px] tracking-wider mb-1 font-mono">
                           Direct Communication:
                         </span>
-                        <a href="tel:+254712345678" className="text-white block font-semibold hover:underline">
+                        <a
+                          href="tel:+254712345678"
+                          className="text-white block font-semibold hover:underline"
+                        >
                           +254 712 345 678 (Corporate Lines)
                         </a>
-                        <p className="text-[#888888]">Active sales desk: Mon - Sat: 7:30 AM - 5:30 PM</p>
+                        <p className="text-[#888888]">
+                          Active sales desk: Mon - Sat: 7:30 AM - 5:30 PM
+                        </p>
                       </div>
                     </div>
 
@@ -1425,10 +1734,15 @@ export default function App() {
                         <span className="text-white block font-extrabold uppercase text-[10px] tracking-wider mb-1 font-mono">
                           Email Enquiries:
                         </span>
-                        <a href="mailto:contact@ahzuriah.co.ke" className="text-[#C5A059] block font-semibold hover:underline">
+                        <a
+                          href="mailto:contact@ahzuriah.co.ke"
+                          className="text-[#C5A059] block font-semibold hover:underline"
+                        >
                           contact@ahzuriah.co.ke
                         </a>
-                        <p className="text-[#888888]">Response target: Within 2 Hours</p>
+                        <p className="text-[#888888]">
+                          Response target: Within 2 Hours
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -1441,9 +1755,15 @@ export default function App() {
                     <div className="relative h-48 bg-neutral-900 rounded-none border border-white/10 flex items-center justify-center overflow-hidden">
                       {/* Stylized high-tech vector wireframe map backdrop */}
                       <div className="absolute inset-0 opacity-25 flex flex-col justify-around text-[#C5A059] text-[8px] font-mono select-none pointer-events-none p-4">
-                        <div className="border-b border-dashed border-neutral-800 pb-2">====== OGINGA ODINGA AVENUE ======</div>
-                        <div className="border-b border-dashed border-neutral-800 pb-2">========= MEGA PLAZA COMPLEX =========</div>
-                        <div className="border-b border-dashed border-neutral-800 pb-2">====== JOMO KENYATTA HIGHWAY ======</div>
+                        <div className="border-b border-dashed border-neutral-800 pb-2">
+                          ====== OGINGA ODINGA AVENUE ======
+                        </div>
+                        <div className="border-b border-dashed border-neutral-800 pb-2">
+                          ========= MEGA PLAZA COMPLEX =========
+                        </div>
+                        <div className="border-b border-dashed border-neutral-800 pb-2">
+                          ====== JOMO KENYATTA HIGHWAY ======
+                        </div>
                       </div>
                       <div className="relative text-center z-10 flex flex-col items-center gap-2">
                         <div className="relative flex items-center justify-center w-10 h-10 bg-amber-500/10 border border-[#C5A059] rounded-none shadow">
@@ -1455,31 +1775,34 @@ export default function App() {
                         <span className="text-[10px] font-mono text-[#999999] block">
                           Mega Plaza, 4th Floor, Kisumu, KE
                         </span>
-                        <a 
-                          href="https://maps.google.com" 
-                          target="_blank" 
+                        <a
+                          href="https://maps.google.com"
+                          target="_blank"
                           rel="noreferrer"
                           className="text-[10px] font-mono text-[#C5A059] underline font-bold mt-1 inline-flex items-center gap-1"
                         >
-                          Open External Directions <ExternalLink className="w-3 h-3" />
+                          Open External Directions{" "}
+                          <ExternalLink className="w-3 h-3" />
                         </a>
                       </div>
                     </div>
                   </div>
-
                 </div>
 
                 {/* Right col contact build form */}
                 <div className="lg:col-span-7 bg-[#151515] p-6 md:p-8 rounded-none border border-white/10 shadow-2xl">
-                  
                   {!contactSubmitted ? (
-                    <form onSubmit={handleContactSubmit} className="flex flex-col gap-6">
+                    <form
+                      onSubmit={handleContactSubmit}
+                      className="flex flex-col gap-6"
+                    >
                       <div>
                         <h3 className="text-md font-sans font-black text-white uppercase tracking-wider mb-1">
                           Book a Structural Consultation
                         </h3>
                         <p className="text-xs text-[#999999]">
-                          Submit your architectural blueprint parameter files for a fast, fixed price quotation assessment.
+                          Submit your architectural blueprint parameter files
+                          for a fast, fixed price quotation assessment.
                         </p>
                       </div>
 
@@ -1493,7 +1816,12 @@ export default function App() {
                             required
                             placeholder="e.g. Dr. Arthur Omondi"
                             value={contactForm.name}
-                            onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
+                            onChange={(e) =>
+                              setContactForm({
+                                ...contactForm,
+                                name: e.target.value,
+                              })
+                            }
                             className="bg-[#151515] border border-white/10 text-white rounded-none p-3 text-xs focus:border-[#C5A059] focus:outline-none"
                           />
                         </div>
@@ -1507,7 +1835,12 @@ export default function App() {
                             required
                             placeholder="yourname@domain.com"
                             value={contactForm.email}
-                            onChange={(e) => setContactForm({ ...contactForm, email: e.target.value })}
+                            onChange={(e) =>
+                              setContactForm({
+                                ...contactForm,
+                                email: e.target.value,
+                              })
+                            }
                             className="bg-[#151515] border border-white/10 text-white rounded-none p-3 text-xs focus:border-[#C5A059] focus:outline-none"
                           />
                         </div>
@@ -1521,7 +1854,12 @@ export default function App() {
                             required
                             placeholder="e.g. +254 712 345 678"
                             value={contactForm.phone}
-                            onChange={(e) => setContactForm({ ...contactForm, phone: e.target.value })}
+                            onChange={(e) =>
+                              setContactForm({
+                                ...contactForm,
+                                phone: e.target.value,
+                              })
+                            }
                             className="bg-[#151515] border border-white/10 text-white rounded-none p-3 text-xs focus:border-[#C5A059] focus:outline-none"
                           />
                         </div>
@@ -1532,13 +1870,26 @@ export default function App() {
                           </label>
                           <select
                             value={contactForm.service}
-                            onChange={(e) => setContactForm({ ...contactForm, service: e.target.value })}
+                            onChange={(e) =>
+                              setContactForm({
+                                ...contactForm,
+                                service: e.target.value,
+                              })
+                            }
                             className="bg-[#151515] text-white border border-white/10 rounded-none p-3 text-xs focus:border-[#C5A059] focus:outline-none w-full"
                           >
-                            <option value="commercial">Commercial Contracting</option>
-                            <option value="residential">Luxury Residential Villa</option>
-                            <option value="interiors">Bespoke Interior Fitout</option>
-                            <option value="renovation">Adaptive Retrofitting</option>
+                            <option value="commercial">
+                              Commercial Contracting
+                            </option>
+                            <option value="residential">
+                              Luxury Residential Villa
+                            </option>
+                            <option value="interiors">
+                              Bespoke Interior Fitout
+                            </option>
+                            <option value="renovation">
+                              Adaptive Retrofitting
+                            </option>
                           </select>
                         </div>
 
@@ -1548,13 +1899,26 @@ export default function App() {
                           </label>
                           <select
                             value={contactForm.scale}
-                            onChange={(e) => setContactForm({ ...contactForm, scale: e.target.value })}
+                            onChange={(e) =>
+                              setContactForm({
+                                ...contactForm,
+                                scale: e.target.value,
+                              })
+                            }
                             className="bg-[#151515] text-white border border-white/10 rounded-none p-3 text-xs focus:border-[#C5A059] focus:outline-none w-full"
                           >
-                            <option value="Under 100 Sqm">Smal Fitout (Under 100 Sqm)</option>
-                            <option value="100-300 Sqm">Standard Residence (100 - 300 Sqm)</option>
-                            <option value="300-800 Sqm">Elite Estate (300 - 800 Sqm)</option>
-                            <option value="Above 800 Sqm">Corporate Multi-Story (800+ Sqm)</option>
+                            <option value="Under 100 Sqm">
+                              Smal Fitout (Under 100 Sqm)
+                            </option>
+                            <option value="100-300 Sqm">
+                              Standard Residence (100 - 300 Sqm)
+                            </option>
+                            <option value="300-800 Sqm">
+                              Elite Estate (300 - 800 Sqm)
+                            </option>
+                            <option value="Above 800 Sqm">
+                              Corporate Multi-Story (800+ Sqm)
+                            </option>
                           </select>
                         </div>
 
@@ -1564,13 +1928,24 @@ export default function App() {
                           </label>
                           <select
                             value={contactForm.location}
-                            onChange={(e) => setContactForm({ ...contactForm, location: e.target.value })}
+                            onChange={(e) =>
+                              setContactForm({
+                                ...contactForm,
+                                location: e.target.value,
+                              })
+                            }
                             className="bg-[#151515] text-white border border-white/10 rounded-none p-3 text-xs focus:border-[#C5A059] focus:outline-none w-full"
                           >
-                            <option value="Kisumu">Kisumu (Milimani / Riat Hills)</option>
+                            <option value="Kisumu">
+                              Kisumu (Milimani / Riat Hills)
+                            </option>
                             <option value="Nairobi">Nairobi Metropolis</option>
-                            <option value="Western Kenya Regional">Western Kenya Hub (Kakamega / Eldoret)</option>
-                            <option value="Other Area">Other / Nationwide Expansion</option>
+                            <option value="Western Kenya Regional">
+                              Western Kenya Hub (Kakamega / Eldoret)
+                            </option>
+                            <option value="Other Area">
+                              Other / Nationwide Expansion
+                            </option>
                           </select>
                         </div>
 
@@ -1583,7 +1958,12 @@ export default function App() {
                             placeholder="Please detail your specific layout ideas or upload draft drawings context..."
                             rows={4}
                             value={contactForm.message}
-                            onChange={(e) => setContactForm({ ...contactForm, message: e.target.value })}
+                            onChange={(e) =>
+                              setContactForm({
+                                ...contactForm,
+                                message: e.target.value,
+                              })
+                            }
                             className="bg-[#151515] border border-white/10 text-white rounded-none p-3 text-xs focus:border-[#C5A059] focus:outline-none resize-none"
                           ></textarea>
                         </div>
@@ -1607,13 +1987,31 @@ export default function App() {
                         Consultation Request Submitted
                       </h3>
                       <p className="text-xs text-[#999999] leading-relaxed max-w-md">
-                        Thank you for registering your project coordinates, <strong>{contactForm.name}</strong>. Our lead structural estimation officer is auditing your description. We will contact you at <strong>{contactForm.phone}</strong> inside 2 hours.
+                        Thank you for registering your project coordinates,{" "}
+                        <strong>{contactForm.name}</strong>. Our lead structural
+                        estimation officer is auditing your description. We will
+                        contact you at <strong>{contactForm.phone}</strong>{" "}
+                        inside 2 hours.
                       </p>
-                      
+
                       <div className="border bg-neutral-900 border-white/10 rounded-none p-4 text-left w-full max-w-md text-[11px] font-mono mt-2 flex flex-col gap-1.5 text-neutral-400">
-                        <div><strong className="text-white">Lead Code:</strong> AZ-CON-{Math.floor(Math.random() * 8000 + 1000)}</div>
-                        <div><strong className="text-white">Assigned Representative:</strong> Sarah Mwangi (Chief Delivery Officer)</div>
-                        <div><strong className="text-white">Service Selected:</strong> {contactForm.service.toUpperCase()} ({contactForm.scale})</div>
+                        <div>
+                          <strong className="text-white">Lead Code:</strong>{" "}
+                          AZ-CON-{Math.floor(Math.random() * 8000 + 1000)}
+                        </div>
+                        <div>
+                          <strong className="text-white">
+                            Assigned Representative:
+                          </strong>{" "}
+                          Sarah Mwangi (Chief Delivery Officer)
+                        </div>
+                        <div>
+                          <strong className="text-white">
+                            Service Selected:
+                          </strong>{" "}
+                          {contactForm.service.toUpperCase()} (
+                          {contactForm.scale})
+                        </div>
                       </div>
 
                       <div className="flex flex-col sm:flex-row gap-3 mt-4 w-full justify-center">
@@ -1634,20 +2032,15 @@ export default function App() {
                       </div>
                     </div>
                   )}
-
                 </div>
-
               </div>
-
             </motion.div>
           )}
-
         </AnimatePresence>
       </main>
 
       {/* Persistent Multi-column cohesive footer */}
       <Footer onPageChange={handlePageChange} />
-
     </div>
   );
 }
