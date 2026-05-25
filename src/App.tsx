@@ -252,7 +252,7 @@ export default function App() {
                   <div className="lg:col-span-5 relative">
                     <div className="relative border border-white/10 overflow-hidden bg-neutral-900 shadow-2xl">
                       <img
-                        src="/src/assets/images/commercial_construction_1779616445045.png"
+                        src={commercialConstruction}
                         alt="High trust structural concrete frameworks in Western Kenya"
                         referrerPolicy="no-referrer"
                         className="w-full h-[320px] object-cover grayscale hover:grayscale-0 transition-all duration-500"
