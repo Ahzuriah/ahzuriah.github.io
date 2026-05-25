@@ -40,7 +40,7 @@ jobs:
       #   run: npm run build
 
       - name: Create .nojekyll (prevents Jekyll breaking _next folder)
-        run: mkdir out && touch ./out/.nojekyll
+        run: touch ./dist/.nojekyll
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
