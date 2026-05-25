@@ -12,7 +12,7 @@ permissions:
 
 concurrency:
   group: "pages"
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -21,17 +21,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: "npm"
+      # - name: Setup Node
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: 20
+      #     cache: "npm"
 
       - name: Install Bun
         uses: oven-sh/setup-bun@v2
 
       - name: Install dependencies and build
-        run: bun i && bun run build
+        run: bun i --frozen-lockfile
+          bun run build
 
       # - name: Install dependencies
       #   run: npm ci
