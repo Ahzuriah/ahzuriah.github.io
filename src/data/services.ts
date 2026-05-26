@@ -56,7 +56,7 @@ export const services: ServiceDetail[] = [
           "We operate under highly transparent fixed-cost contracts. Through rigorous pre-construction quantity surveying and integrated supply chain management, we lock in steel and concrete prices before excavation begins to protect clients from raw market volatility.",
       },
     ],
-    imageUrl: "/src/assets/images/commercial_construction_1779616445045.png",
+    imageUrl: commercialConstruction,
     subCategories: [
       "Corporate Offices",
       "Shopping Complexes",
